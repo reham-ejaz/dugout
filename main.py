@@ -1,5 +1,6 @@
-from reham_dugout.loader import load_players, load_team
+from reham_dugout.loader import load_players, load_team, load_teams
 from reham_dugout.rules import MAX_CREDITS
+from reham_dugout.models import League
  
  
 def show_pool(players):
@@ -28,14 +29,50 @@ def show_team(team):
     print(f"Total credits: {team.total_credits()}")
     print(f"Credits left: {remaining}")
     print(f"Captain: {team.captain.name}, Vice-captain: {team.vice_captain.name}")
- 
+
+def show_league_table(league):
+    """Display all teams from cheapest to most expensive."""
+
+    print("\n========== LEAGUE TABLE ==========")
+
+    ranked_teams = league.rank_teams()
+
+    print(f"{'Rank':<8}{'Team':<20}{'Owner':<15}{'Credits':<12}")
+
+    for rank, team in enumerate(ranked_teams, start=1):
+        print(
+            f"{rank:<8}"
+            f"{team.team_name:<20}"
+            f"{team.owner:<15}"
+            f"{team.total_credits():<12.1f}"
+        ) 
  
 def main():
     players = load_players("data//players.csv")
     show_pool(players)
-    team = load_team("data/my_team.csv", players)
-    show_team(team)
- 
- 
+    my_team = load_team("data/my_team.csv", players)
+    show_team(my_team)
+    sample_teams = load_teams("data/sample_teams.csv", players)
+    legal = []
+    illegal = []
+    for team in sample_teams:
+        show_team(team)
+        errors = team.check_rules()
+        if errors:
+            illegal.append(team)
+            print("ILLEGAL:")
+            for error in errors:
+                print(f"  - {error}")
+        else:
+            legal.append(team)
+            print("LEGAL")
+    print(f"\nSummary: {len(legal)} legal, {len(illegal)} illegal out of {len(sample_teams)} teams")
+    print("Legal teams:")
+    for team in legal:
+        print(f"  {team.team_name}")
+    print("Illegal teams:")
+    for team in illegal:
+        print(f"  {team.team_name}")
+
 if __name__ == "__main__":
     main()

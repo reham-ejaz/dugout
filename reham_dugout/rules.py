@@ -50,9 +50,22 @@ def check_roles(team):
 
 def check_captains(team):
     """Captain and vice-captain must be chosen, be in the team, and be different."""
-    # Stop early: the checks below would crash on None
+
     if team.captain is None or team.vice_captain is None:
         return ["Team must have both a captain and a vice-captain"]
+
+    errors = []
+
+    if team.captain not in team.players:
+        errors.append(f"Captain {team.captain.name} is not in the team")
+
+    if team.vice_captain not in team.players:
+        errors.append(f"Vice-captain {team.vice_captain.name} is not in the team")
+
+    if team.captain == team.vice_captain:
+        errors.append("Captain and vice-captain cannot be the same player")
+
+    return errors
 
 def check_no_duplicates(team):
     """A player should not appear more than once in a team"""
