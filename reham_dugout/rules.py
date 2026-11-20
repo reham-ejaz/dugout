@@ -53,6 +53,18 @@ def check_captains(team):
     # Stop early: the checks below would crash on None
     if team.captain is None or team.vice_captain is None:
         return ["Team must have both a captain and a vice-captain"]
+
+def check_no_duplicates(team):
+    """A player should not appear more than once in a team"""
+    errors = []
+    seen = set()
+    for player in team.players:
+        if player.player_id in seen:
+            errors.append(f"Duplicate player found: {player.name}")
+        else:
+            seen.add(player.player_id)
+    return errors
+
  
     errors = []
     if team.captain not in team.players:
