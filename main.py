@@ -1,4 +1,5 @@
 from reham_dugout.loader import load_players, load_team
+from reham_dugout.rules import MAX_CREDITS
  
  
 def show_pool(players):
@@ -21,7 +22,11 @@ def show_team(team):
     print(f"\nTeam {team.team_name} by {team.owner}:")
     for player in team.players:
         print(f"  {player}")
+
+    total = team.total_credits()
+    remaining = MAX_CREDITS - total
     print(f"Total credits: {team.total_credits()}")
+    print(f"Credits left: {remaining}")
     print(f"Captain: {team.captain.name}, Vice-captain: {team.vice_captain.name}")
  
  
