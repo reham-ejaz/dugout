@@ -79,5 +79,16 @@ def main():
         print(f"  {team.team_name}")
     show_league_table(sample_teams, my_team)
 
+#Reporting the test teams
+    for team in sample_teams[-2:]:
+        errors = team.check_rules()
+        print(f"\nTeam: {team}")
+        if errors:
+            print("Violations found:")
+            for error in errors:
+                print("-", error)
+        else:
+            print("No violations found.")
+
 if __name__ == "__main__":
     main()
