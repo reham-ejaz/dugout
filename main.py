@@ -30,22 +30,26 @@ def show_team(team):
     print(f"Credits left: {remaining}")
     print(f"Captain: {team.captain.name}, Vice-captain: {team.vice_captain.name}")
 
-def show_league_table(league):
-    """Display all teams from cheapest to most expensive."""
-
-    print("\n========== LEAGUE TABLE ==========")
+def show_league_table(sample_teams, my_team):
+    league = League("Dugout League")
+    for team in sample_teams:
+        league.add_team(team)
+    league.add_team(my_team)
 
     ranked_teams = league.rank_teams()
 
-    print(f"{'Rank':<8}{'Team':<20}{'Owner':<15}{'Credits':<12}")
+    print("\nLEAGUE TABLE")
+    print("-" * 50)
+    print(f"{'Rank':<8}{'Team':<20}{'Owner':<12}{'Credits':<10}")
+    print("-" * 50)
 
     for rank, team in enumerate(ranked_teams, start=1):
         print(
-            f"{rank:<8}"
-            f"{team.team_name:<20}"
-            f"{team.owner:<15}"
-            f"{team.total_credits():<12.1f}"
-        ) 
+            f"{rank:<8}{team.team_name:<20}"
+            f"{team.owner:<12}{team.total_credits():<10}"
+        )
+
+    print("-" * 50)
  
 def main():
     players = load_players("data//players.csv")
@@ -73,6 +77,7 @@ def main():
     print("Illegal teams:")
     for team in illegal:
         print(f"  {team.team_name}")
+    show_league_table(sample_teams, my_team)
 
 if __name__ == "__main__":
     main()

@@ -78,16 +78,6 @@ def check_no_duplicates(team):
             seen.add(player.player_id)
     return errors
 
- 
-    errors = []
-    if team.captain not in team.players:
-        errors.append(f"Captain {team.captain.name} is not in the team")
-    if team.vice_captain not in team.players:
-        errors.append(f"Vice-captain {team.vice_captain.name} is not in the team")
-    if team.captain == team.vice_captain:
-        errors.append("Captain and vice-captain cannot be the same player")
-    return errors
-
 
 
 
